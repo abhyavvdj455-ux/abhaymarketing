@@ -1,71 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Login System</title>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } 
-    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abhay Marketing Website</title>
 
-    // 🔥 YOUR FIREBASE CONFIG (replace this)
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT.firebaseapp.com",
-      projectId: "YOUR_PROJECT"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    // SIGN UP
-    window.signup = function(){
-      let email = document.getElementById("email").value;
-      let pass = document.getElementById("password").value;
-
-      createUserWithEmailAndPassword(auth, email, pass)
-      .then(() => alert("Account Created ✔"))
-      .catch(e => alert(e.message));
+  <style>
+    body{
+      margin:0;
+      font-family:Arial;
+      background:#050714;
+      color:white;
+      text-align:center;
     }
 
-    // LOGIN
-    window.login = function(){
-      let email = document.getElementById("email").value;
-      let pass = document.getElementById("password").value;
-
-      signInWithEmailAndPassword(auth, email, pass)
-      .then(() => alert("Login Successful ✔"))
-      .catch(e => alert(e.message));
+    header{
+      padding:20px;
+      background:#0f1730;
+      font-size:22px;
+      font-weight:bold;
     }
 
-    // LOGOUT
-    window.logout = function(){
-      signOut(auth);
+    section{
+      padding:80px 20px;
     }
 
-    // CHECK LOGIN STATUS
-    onAuthStateChanged(auth, (user) => {
-      if(user){
-        document.getElementById("status").innerText = "Logged in: " + user.email;
-      } else {
-        document.getElementById("status").innerText = "Not logged in";
-      }
-    });
+    .card{
+      background:#0f1730;
+      padding:20px;
+      margin:20px auto;
+      max-width:500px;
+      border-radius:12px;
+      border:1px solid #1f2a44;
+    }
 
-  </script>
+    .btn{
+      padding:12px 20px;
+      background:#38bdf8;
+      border:none;
+      border-radius:8px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+
+    .btn:hover{
+      background:#0ea5e9;
+    }
+
+    footer{
+      padding:20px;
+      border-top:1px solid #1f2a44;
+      color:#aaa;
+    }
+  </style>
+
 </head>
 
 <body>
 
-<h2>LOGIN SYSTEM</h2>
+<header>
+  Abhay Marketing Website
+</header>
 
-<input id="email" placeholder="Email"><br><br>
-<input id="password" type="password" placeholder="Password"><br><br>
+<section>
+  <h1>Welcome 🚀</h1>
+  <p>Simple AI Marketing Website (No Login System)</p>
 
-<button onclick="signup()">Sign Up</button>
-<button onclick="login()">Login</button>
-<button onclick="logout()">Logout</button>
+  <div class="card">
+    <h2>Our Services</h2>
+    <p>✔ SEO</p>
+    <p>✔ Social Media Marketing</p>
+    <p>✔ Lead Generation</p>
+    <p>✔ Business Growth</p>
+  </div>
 
-<p id="status"></p>
+  <div class="card">
+    <h2>Contact Us</h2>
+    <button class="btn">WhatsApp Now</button>
+  </div>
+</section>
+
+<footer>
+  © 2026 Abhay Marketing
+</footer>
 
 </body>
 </html>
