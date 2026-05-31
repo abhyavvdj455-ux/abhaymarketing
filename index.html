@@ -1,219 +1,172 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Fantasy Cricket Pro</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fantasy Cricket App</title>
 
-  <style>
-    body{
-      font-family: Arial;
-      margin:0;
-      background:#070b1a;
-      color:white;
-    }
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0a0f1f;
+  color:white;
+}
 
-    header{
-      padding:15px;
-      background:#111a33;
-      text-align:center;
-      font-size:20px;
-      font-weight:bold;
-    }
+/* TOP BAR */
+.header{
+  background:#111a33;
+  padding:15px;
+  text-align:center;
+  font-weight:bold;
+  font-size:18px;
+}
 
-    .container{
-      padding:15px;
-      display:grid;
-      gap:15px;
-      max-width:800px;
-      margin:auto;
-    }
+/* MATCH CARD */
+.match{
+  background:#151f3d;
+  margin:10px;
+  padding:15px;
+  border-radius:12px;
+  border:1px solid #2a3763;
+}
 
-    .card{
-      background:#151f3d;
-      padding:15px;
-      border-radius:12px;
-      border:1px solid #26325a;
-    }
+.team{
+  display:flex;
+  justify-content:space-between;
+  font-size:14px;
+  margin:5px 0;
+}
 
-    .player{
-      display:flex;
-      justify-content:space-between;
-      padding:8px;
-      border-bottom:1px solid #2a3763;
-    }
+/* BUTTON */
+.btn{
+  background:#38bdf8;
+  border:none;
+  padding:10px;
+  width:100%;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+}
 
-    button{
-      padding:8px 12px;
-      border:none;
-      border-radius:8px;
-      background:#38bdf8;
-      cursor:pointer;
-      font-weight:bold;
-    }
+.btn:hover{
+  background:#0ea5e9;
+}
 
-    button:hover{background:#0ea5e9;}
+/* PLAYER LIST */
+.player{
+  display:flex;
+  justify-content:space-between;
+  padding:10px;
+  border-bottom:1px solid #2a3763;
+}
 
-    .selected{
-      color:#00ff99;
-    }
+.selected{
+  color:#00ff99;
+}
 
-    .grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-    }
+/* SCREEN */
+.screen{
+  display:none;
+  padding:10px;
+}
 
-    input{
-      width:100%;
-      padding:10px;
-      border-radius:8px;
-      border:none;
-      margin-top:5px;
-    }
-
-    .big{
-      font-size:22px;
-      font-weight:bold;
-      color:#38bdf8;
-    }
-  </style>
+.active{
+  display:block;
+}
+</style>
 </head>
 
 <body>
 
-<header>🏏 Fantasy Cricket PRO</header>
+<div class="header">🏏 Fantasy Cricket Pro (Demo)</div>
 
-<div class="container">
+<!-- HOME -->
+<div id="home" class="screen active">
 
-  <!-- TEAM NAME -->
-  <div class="card">
-    <h3>Create Team</h3>
-    <input id="teamName" placeholder="Enter Team Name">
-    <button onclick="saveTeam()">Save Team</button>
+  <div class="match">
+    <div class="team">India vs Australia</div>
+    <div class="team">Time: Live</div>
+    <button class="btn" onclick="openTeam()">Create Team</button>
   </div>
 
-  <!-- PLAYERS -->
-  <div class="card">
-    <h3>Select Players</h3>
-    <div id="players"></div>
-    <button onclick="playMatch()">Start Match</button>
-  </div>
-
-  <!-- SCORE -->
-  <div class="card">
-    <h3>Total Score</h3>
-    <div class="big" id="score">0</div>
-  </div>
-
-  <!-- LEADERBOARD -->
-  <div class="card">
-    <h3>Leaderboard</h3>
-    <div id="board">No matches yet</div>
+  <div class="match">
+    <div class="team">India vs Pakistan</div>
+    <div class="team">Time: 7:30 PM</div>
+    <button class="btn" onclick="openTeam()">Create Team</button>
   </div>
 
 </div>
 
+<!-- TEAM -->
+<div id="team" class="screen">
+
+  <h3>Select Players</h3>
+
+  <div id="players"></div>
+
+  <button class="btn" onclick="startMatch()">Join Contest</button>
+
+  <h3>Score: <span id="score">0</span></h3>
+
+</div>
+
 <script>
+
 let players = [
-  {name:"Virat", selected:false},
-  {name:"Rohit", selected:false},
-  {name:"Dhoni", selected:false},
-  {name:"Gill", selected:false},
-  {name:"Pant", selected:false},
-  {name:"Hardik", selected:false}
+  "Virat Kohli",
+  "Rohit Sharma",
+  "Dhoni",
+  "Gill",
+  "Pant",
+  "Hardik Pandya"
 ];
 
-let history = JSON.parse(localStorage.getItem("history") || "[]");
+let selected = [];
 
-// render players
-function render(){
-  let html="";
-  players.forEach((p,i)=>{
-    html+=`
+function openTeam(){
+  document.getElementById("home").classList.remove("active");
+  document.getElementById("team").classList.add("active");
+  renderPlayers();
+}
+
+function renderPlayers(){
+  document.getElementById("players").innerHTML =
+    players.map((p,i)=>`
       <div class="player">
-        <span class="${p.selected?'selected':''}">${p.name}</span>
+        <span class="${selected.includes(i)?'selected':''}">${p}</span>
         <button onclick="toggle(${i})">
-          ${p.selected?"Remove":"Select"}
+          ${selected.includes(i) ? "Remove" : "Select"}
         </button>
       </div>
-    `;
-  });
-  document.getElementById("players").innerHTML=html;
+    `).join("");
 }
-render();
 
 function toggle(i){
-  players[i].selected = !players[i].selected;
-  render();
-}
-
-// save team
-function saveTeam(){
-  let name = document.getElementById("teamName").value;
-  if(!name){
-    alert("Enter team name");
-    return;
+  if(selected.includes(i)){
+    selected = selected.filter(x=>x!==i);
+  } else {
+    selected.push(i);
   }
-
-  localStorage.setItem("team", name);
-  alert("Team Saved ✔ " + name);
+  renderPlayers();
 }
 
-// play match
-function playMatch(){
-  let selected = players.filter(p=>p.selected);
-
-  if(selected.length < 1){
+function startMatch(){
+  if(selected.length === 0){
     alert("Select players first");
     return;
   }
 
-  let total = 0;
-  let resultText = "";
+  let score = 0;
 
-  selected.forEach(p=>{
-    let points = Math.floor(Math.random()*100);
-    total += points;
-    resultText += `${p.name}: ${points} pts\n`;
+  selected.forEach(()=>{
+    score += Math.floor(Math.random()*100);
   });
 
-  document.getElementById("score").innerText = total;
+  document.getElementById("score").innerText = score;
 
-  // save history
-  let team = localStorage.getItem("team") || "My Team";
-
-  history.push({
-    team,
-    score: total,
-    time: new Date().toLocaleString()
-  });
-
-  localStorage.setItem("history", JSON.stringify(history));
-
-  renderBoard();
+  alert("Contest Joined! Score: " + score);
 }
 
-// leaderboard
-function renderBoard(){
-  if(history.length === 0){
-    document.getElementById("board").innerHTML="No matches yet";
-    return;
-  }
-
-  let html = "";
-  history.slice().reverse().forEach(h=>{
-    html += `
-      <p>
-        🏆 <b>${h.team}</b> → ${h.score} pts <br>
-        <small>${h.time}</small>
-      </p>
-    `;
-  });
-
-  document.getElementById("board").innerHTML = html;
-}
-
-renderBoard();
 </script>
 
 </body>
