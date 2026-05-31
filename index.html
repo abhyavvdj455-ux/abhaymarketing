@@ -1,88 +1,220 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
+  <title>Fantasy Cricket Pro</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Abhay Marketing Website</title>
 
   <style>
     body{
+      font-family: Arial;
       margin:0;
-      font-family:Arial;
-      background:#050714;
+      background:#070b1a;
       color:white;
-      text-align:center;
     }
 
     header{
-      padding:20px;
-      background:#0f1730;
-      font-size:22px;
+      padding:15px;
+      background:#111a33;
+      text-align:center;
+      font-size:20px;
       font-weight:bold;
     }
 
-    section{
-      padding:80px 20px;
+    .container{
+      padding:15px;
+      display:grid;
+      gap:15px;
+      max-width:800px;
+      margin:auto;
     }
 
     .card{
-      background:#0f1730;
-      padding:20px;
-      margin:20px auto;
-      max-width:500px;
+      background:#151f3d;
+      padding:15px;
       border-radius:12px;
-      border:1px solid #1f2a44;
+      border:1px solid #26325a;
     }
 
-    .btn{
-      padding:12px 20px;
-      background:#38bdf8;
+    .player{
+      display:flex;
+      justify-content:space-between;
+      padding:8px;
+      border-bottom:1px solid #2a3763;
+    }
+
+    button{
+      padding:8px 12px;
       border:none;
       border-radius:8px;
-      font-weight:bold;
+      background:#38bdf8;
       cursor:pointer;
+      font-weight:bold;
     }
 
-    .btn:hover{
-      background:#0ea5e9;
+    button:hover{background:#0ea5e9;}
+
+    .selected{
+      color:#00ff99;
     }
 
-    footer{
-      padding:20px;
-      border-top:1px solid #1f2a44;
-      color:#aaa;
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    input{
+      width:100%;
+      padding:10px;
+      border-radius:8px;
+      border:none;
+      margin-top:5px;
+    }
+
+    .big{
+      font-size:22px;
+      font-weight:bold;
+      color:#38bdf8;
     }
   </style>
-
 </head>
 
 <body>
 
-<header>
-  Abhay Marketing Website
-</header>
+<header>🏏 Fantasy Cricket PRO</header>
 
-<section>
-  <h1>Welcome 🚀</h1>
-  <p>Simple AI Marketing Website (No Login System)</p>
+<div class="container">
 
+  <!-- TEAM NAME -->
   <div class="card">
-    <h2>Our Services</h2>
-    <p>✔ SEO</p>
-    <p>✔ Social Media Marketing</p>
-    <p>✔ Lead Generation</p>
-    <p>✔ Business Growth</p>
+    <h3>Create Team</h3>
+    <input id="teamName" placeholder="Enter Team Name">
+    <button onclick="saveTeam()">Save Team</button>
   </div>
 
+  <!-- PLAYERS -->
   <div class="card">
-    <h2>Contact Us</h2>
-    <button class="btn">WhatsApp Now</button>
+    <h3>Select Players</h3>
+    <div id="players"></div>
+    <button onclick="playMatch()">Start Match</button>
   </div>
-</section>
 
-<footer>
-  © 2026 Abhay Marketing
-</footer>
+  <!-- SCORE -->
+  <div class="card">
+    <h3>Total Score</h3>
+    <div class="big" id="score">0</div>
+  </div>
+
+  <!-- LEADERBOARD -->
+  <div class="card">
+    <h3>Leaderboard</h3>
+    <div id="board">No matches yet</div>
+  </div>
+
+</div>
+
+<script>
+let players = [
+  {name:"Virat", selected:false},
+  {name:"Rohit", selected:false},
+  {name:"Dhoni", selected:false},
+  {name:"Gill", selected:false},
+  {name:"Pant", selected:false},
+  {name:"Hardik", selected:false}
+];
+
+let history = JSON.parse(localStorage.getItem("history") || "[]");
+
+// render players
+function render(){
+  let html="";
+  players.forEach((p,i)=>{
+    html+=`
+      <div class="player">
+        <span class="${p.selected?'selected':''}">${p.name}</span>
+        <button onclick="toggle(${i})">
+          ${p.selected?"Remove":"Select"}
+        </button>
+      </div>
+    `;
+  });
+  document.getElementById("players").innerHTML=html;
+}
+render();
+
+function toggle(i){
+  players[i].selected = !players[i].selected;
+  render();
+}
+
+// save team
+function saveTeam(){
+  let name = document.getElementById("teamName").value;
+  if(!name){
+    alert("Enter team name");
+    return;
+  }
+
+  localStorage.setItem("team", name);
+  alert("Team Saved ✔ " + name);
+}
+
+// play match
+function playMatch(){
+  let selected = players.filter(p=>p.selected);
+
+  if(selected.length < 1){
+    alert("Select players first");
+    return;
+  }
+
+  let total = 0;
+  let resultText = "";
+
+  selected.forEach(p=>{
+    let points = Math.floor(Math.random()*100);
+    total += points;
+    resultText += `${p.name}: ${points} pts\n`;
+  });
+
+  document.getElementById("score").innerText = total;
+
+  // save history
+  let team = localStorage.getItem("team") || "My Team";
+
+  history.push({
+    team,
+    score: total,
+    time: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("history", JSON.stringify(history));
+
+  renderBoard();
+}
+
+// leaderboard
+function renderBoard(){
+  if(history.length === 0){
+    document.getElementById("board").innerHTML="No matches yet";
+    return;
+  }
+
+  let html = "";
+  history.slice().reverse().forEach(h=>{
+    html += `
+      <p>
+        🏆 <b>${h.team}</b> → ${h.score} pts <br>
+        <small>${h.time}</small>
+      </p>
+    `;
+  });
+
+  document.getElementById("board").innerHTML = html;
+}
+
+renderBoard();
+</script>
 
 </body>
 </html>
