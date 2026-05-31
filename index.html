@@ -3,168 +3,252 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Abhay Marketing</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:'Poppins', sans-serif;
-    }
+  <title>Abhay SaaS OS - Complete System</title>
 
-    body{
-      background: linear-gradient(135deg,#0f172a,#1e293b);
-      color:white;
-    }
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+    body{background:#050714;color:white;}
 
     header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:20px 10%;
+      position:fixed;top:0;width:100%;
+      background:rgba(5,10,25,0.85);
+      backdrop-filter:blur(12px);
+      display:flex;justify-content:space-between;align-items:center;
+      padding:14px 10%;border-bottom:1px solid #1f2a44;
     }
 
-    .logo{
-      font-size:22px;
-      font-weight:700;
-      color:#38bdf8;
-    }
+    .logo{color:#38bdf8;font-weight:800;}
 
-    nav a{
-      color:white;
-      margin-left:20px;
-      text-decoration:none;
-      font-weight:500;
-    }
-
-    nav a:hover{
-      color:#38bdf8;
-    }
-
-    .hero{
-      text-align:center;
-      padding:80px 10% 40px;
-    }
-
-    .hero h1{
-      font-size:48px;
-      margin-bottom:15px;
-    }
-
-    .hero p{
-      font-size:18px;
-      color:#cbd5e1;
-      max-width:600px;
-      margin:0 auto;
-    }
-
-    .btn{
-      margin-top:25px;
-      display:inline-block;
-      padding:12px 25px;
-      background:#38bdf8;
-      color:black;
-      border-radius:8px;
-      font-weight:600;
-      text-decoration:none;
-      transition:0.3s;
-    }
-
-    .btn:hover{
-      background:#0ea5e9;
-      color:white;
-    }
-
-    .section{
-      padding:60px 10%;
-      text-align:center;
-    }
-
-    .cards{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-      gap:20px;
-      margin-top:30px;
-    }
+    section{padding:100px 10%;text-align:center;}
 
     .card{
-      background:#1e293b;
-      padding:20px;
+      max-width:700px;
+      margin:auto;
+      background:#0f1730;
+      border:1px solid #1f2a44;
       border-radius:12px;
-      transition:0.3s;
-    }
-
-    .card:hover{
-      transform:translateY(-5px);
-      background:#334155;
-    }
-
-    footer{
-      text-align:center;
       padding:20px;
-      border-top:1px solid #334155;
-      color:#94a3b8;
+      text-align:left;
     }
 
-    @media(max-width:768px){
-      .hero h1{font-size:32px;}
-      header{flex-direction:column;}
-      nav{margin-top:10px;}
+    input,textarea{
+      width:100%;padding:12px;margin-top:10px;
+      border:none;border-radius:8px;outline:none;
+    }
+
+    button{
+      margin-top:12px;
+      padding:12px;
+      width:100%;
+      background:#38bdf8;
+      border:none;
+      font-weight:700;
+      cursor:pointer;
+      border-radius:8px;
+    }
+
+    button:hover{background:#0ea5e9;}
+
+    .hidden{display:none;}
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:15px;
+    }
+
+    .box{
+      background:#0f1730;
+      border:1px solid #1f2a44;
+      padding:15px;
+      border-radius:10px;
+    }
+
+    .tag{
+      padding:4px 10px;
+      background:#38bdf8;
+      color:black;
+      border-radius:20px;
+      font-size:12px;
+      display:inline-block;
+      margin-top:5px;
     }
   </style>
 </head>
+
 <body>
 
 <header>
-  <div class="logo">Abhay Marketing</div>
-  <nav>
-    <a href="#">Home</a>
-    <a href="#services">Services</a>
-    <a href="#about">About</a>
-    <a href="#contact">Contact</a>
-  </nav>
+  <div class="logo">SAAS OS</div>
+  <button onclick="logout()">Logout</button>
 </header>
 
-<section class="hero">
-  <h1>Grow Your Business Online</h1>
-  <p>We help you build strong digital presence with modern marketing strategies, social media growth and branding solutions.</p>
-  <a href="#contact" class="btn">Get Started</a>
-</section>
+<section id="auth">
+  <div class="card">
+    <h2>Login / Signup</h2>
 
-<section class="section" id="services">
-  <h2>Our Services</h2>
-  <div class="cards">
-    <div class="card">
-      <h3>Social Media Marketing</h3>
-      <p>Grow your Instagram, Facebook and YouTube presence.</p>
-    </div>
-    <div class="card">
-      <h3>Website Design</h3>
-      <p>Modern, responsive and fast loading websites.</p>
-    </div>
-    <div class="card">
-      <h3>Branding</h3>
-      <p>Create a strong identity for your business.</p>
-    </div>
+    <input id="email" placeholder="Email" />
+    <input id="password" type="password" placeholder="Password" />
+
+    <button onclick="signup()">Sign Up</button>
+    <button onclick="login()">Login</button>
+
+    <p id="msg"></p>
   </div>
 </section>
 
-<section class="section" id="about">
-  <h2>About Us</h2>
-  <p>Abhay Marketing is focused on helping small businesses grow online with affordable and effective digital solutions.</p>
+<section id="app" class="hidden">
+
+  <div class="card">
+    <h2>Dashboard</h2>
+    <p id="user"></p>
+    <p id="role"></p>
+    <p id="plan"></p>
+  </div>
+
+  <br/>
+
+  <div class="card">
+    <h3>Create Lead (CRM)</h3>
+    <input id="leadName" placeholder="Lead Name" />
+    <input id="leadEmail" placeholder="Lead Email" />
+    <button onclick="addLead()">Save Lead</button>
+  </div>
+
+  <br/>
+
+  <div class="card">
+    <h3>My Leads</h3>
+    <div id="leads"></div>
+  </div>
+
+  <br/>
+
+  <div class="card">
+    <h3>Upgrade Plan</h3>
+    <button onclick="upgrade('basic')">Basic</button>
+    <button onclick="upgrade('pro')">Pro</button>
+    <button onclick="upgrade('elite')">Elite</button>
+  </div>
+
 </section>
 
-<section class="section" id="contact">
-  <h2>Contact</h2>
-  <p>Email: example@email.com | WhatsApp: +91 XXXXX XXXXX</p>
-</section>
+<script type="module">
 
-<footer>
-  © 2026 Abhay Marketing. All rights reserved.
-</footer>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  addDoc,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser = null;
+
+window.signup = async function(){
+  let email=document.getElementById('email').value;
+  let pass=document.getElementById('password').value;
+
+  const res = await createUserWithEmailAndPassword(auth,email,pass);
+
+  await setDoc(doc(db,"users",res.user.uid),{
+    email,
+    role:"user",
+    plan:"free"
+  });
+
+  document.getElementById('msg').innerText="Account Created";
+}
+
+window.login = async function(){
+  let email=document.getElementById('email').value;
+  let pass=document.getElementById('password').value;
+
+  await signInWithEmailAndPassword(auth,email,pass);
+}
+
+onAuthStateChanged(auth,async(user)=>{
+  if(!user){
+    document.getElementById('auth').classList.remove('hidden');
+    document.getElementById('app').classList.add('hidden');
+    return;
+  }
+
+  currentUser=user;
+
+  document.getElementById('auth').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+
+  const snap = await getDoc(doc(db,"users",user.uid));
+  const data = snap.data();
+
+  document.getElementById('user').innerText="User: "+data.email;
+  document.getElementById('role').innerText="Role: "+data.role;
+  document.getElementById('plan').innerText="Plan: "+data.plan;
+
+  loadLeads();
+});
+
+window.logout=()=>signOut(auth);
+
+window.addLead=async function(){
+  let name=document.getElementById('leadName').value;
+  let email=document.getElementById('leadEmail').value;
+
+  await addDoc(collection(db,"leads"),{
+    uid:currentUser.uid,
+    name,email
+  });
+
+  loadLeads();
+}
+
+async function loadLeads(){
+  let q=await getDocs(collection(db,"leads"));
+  let html="";
+
+  q.forEach(d=>{
+    let x=d.data();
+    if(x.uid===currentUser.uid){
+      html+=`<div class='box'>${x.name} - ${x.email}</div>`;
+    }
+  });
+
+  document.getElementById('leads').innerHTML=html;
+}
+
+window.upgrade=async function(plan){
+  await setDoc(doc(db,"users",currentUser.uid),{
+    plan
+  },{merge:true});
+
+  alert("Plan updated: "+plan);
+}
+
+</script>
 
 </body>
 </html>
